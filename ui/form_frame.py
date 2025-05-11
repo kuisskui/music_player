@@ -1,6 +1,5 @@
 import tkinter as tk
 from model.player import player
-import sys
 
 
 class FormFrame(tk.Frame):
