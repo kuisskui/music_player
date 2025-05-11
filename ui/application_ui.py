@@ -1,5 +1,4 @@
 import tkinter as tk
-from scrollable_frame import ScrollableFrame
 from content_frame import ContentFrame
 
 

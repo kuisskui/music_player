@@ -1,8 +1,5 @@
-from models import *
-
-player = Player()
-
-media = Media("https://www.youtube.com/watch?v=FdZCt4M2gaw")
+from ui.application_ui import ApplicationUI
 
 
-player.play(media)
+applicationUI = ApplicationUI()
+applicationUI.mainloop()
