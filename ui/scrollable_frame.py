@@ -1,8 +1,9 @@
 import tkinter as tk
 from tkinter import ttk
+from card_frame import CardFrame
 
 
-class ScrollableFrame(ttk.Frame):
+class ScrollableFrame(tk.Frame):
     def __init__(self, parent, *args, **kwargs):
         super().__init__(parent, *args, **kwargs)
 
@@ -19,6 +20,14 @@ class ScrollableFrame(ttk.Frame):
 
         self.inner.bind("<Configure>", self._on_frame_configure)
         self.canvas.bind_all("<MouseWheel>", self._on_mousewheel)
+
+        self.view()
+
+    def view(self):
+        # ——— Card ———
+        for _ in range(7):
+            card = CardFrame(self.inner)
+            card.pack(fill="both", padx=10, pady=10)
 
     def _on_canvas_configure(self, event):
         # Force the inner window to fill the canvas’s width
