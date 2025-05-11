@@ -1,5 +1,5 @@
 import tkinter as tk
-from content_frame import ContentFrame
+from ui.content_frame import ContentFrame
 
 
 class ApplicationUI(tk.Tk):

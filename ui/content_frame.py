@@ -1,7 +1,7 @@
 import tkinter as tk
-from header_frame import HeaderFrame
-from scrollable_frame import ScrollableFrame
-from form_frame import FormFrame
+from ui.header_frame import HeaderFrame
+from ui.scrollable_frame import ScrollableFrame
+from ui.form_frame import FormFrame
 
 
 class ContentFrame(tk.Frame):

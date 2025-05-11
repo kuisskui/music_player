@@ -1,4 +1,6 @@
 import tkinter as tk
+from model.player import player
+import sys
 
 
 class FormFrame(tk.Frame):
@@ -12,14 +14,16 @@ class FormFrame(tk.Frame):
                  text="Paste a youtube link",
                  bg="white", fg="black",
                  font=("Arial", 10)) \
-            .pack(anchor="w", padx=10, pady=(0, 5))
+            .pack(anchor="w", padx=10, pady=(10, 2))
 
-        self.entry = tk.Entry(self, fg="gray", font=("Arial", 12), bd=1, relief="solid", highlightthickness=0)
+        self.entry = tk.Entry(self, fg="gray", bg="white", font=("Arial", 12), bd=1, relief="solid", highlightthickness=0)
         self.entry.insert(0, "Link")
-        self.entry.pack(fill="x", padx=10, pady=10)
-        # placeholder handlers
+        self.entry.pack(fill="x", padx=10, pady=(0, 10))
+
         self.entry.bind("<FocusIn>", self._clear_placeholder)
         self.entry.bind("<FocusOut>", self._add_placeholder)
+        self.entry.bind("<Return>", self._push_url)
+        self.entry.bind("<Control-v>", lambda e: self.entry.event_generate("<<Paste>>"))
 
     def _clear_placeholder(self, event):
         if self.entry.get() == "Link":
@@ -30,3 +34,8 @@ class FormFrame(tk.Frame):
         if not self.entry.get():
             self.entry.insert(0, "Link")
             self.entry.config(fg="gray")
+
+    def _push_url(self, event):
+        print(self.entry.get())
+        url = self.entry.get()
+        player.set_current_url(url)

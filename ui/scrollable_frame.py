@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
-from card_frame import CardFrame
+from ui.card_frame import CardFrame
 
 
 class ScrollableFrame(tk.Frame):

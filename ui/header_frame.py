@@ -1,4 +1,6 @@
 import tkinter as tk
+from model.player import player
+from model.media import Media
 
 
 class HeaderFrame(tk.Frame):
@@ -6,6 +8,11 @@ class HeaderFrame(tk.Frame):
         super().__init__(parent, *args, **kwargs)
         self.configure(bg="black")
         self.view()
+
+        self.bind("<Button-1>", self.on_click)
+
+        for child in self.winfo_children():
+            child.bind("<Button-1>", self.on_click)
 
     def view(self):
         tk.Label(self, text="Playing...",
@@ -17,3 +24,6 @@ class HeaderFrame(tk.Frame):
                  bg="black", fg="white",
                  font=("Arial", 12)) \
             .pack(side="bottom", anchor="e", padx=14, pady=14)
+
+    def on_click(self, event):
+        player.play(Media(player.current_url))
