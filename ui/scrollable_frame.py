@@ -6,24 +6,23 @@ class ScrollableFrame(ttk.Frame):
     def __init__(self, parent, *args, **kwargs):
         super().__init__(parent, *args, **kwargs)
 
-        # 1) Canvas + scrollbar
-        self.canvas = tk.Canvas(self, borderwidth=0, highlightthickness=0)
+        self.canvas = tk.Canvas(self, bg="white", borderwidth=0, highlightthickness=0, height=600)
         self.v_scroll = ttk.Scrollbar(self, orient="vertical", command=self.canvas.yview)
         self.canvas.configure(yscrollcommand=self.v_scroll.set)
 
-        # 2) The interior frame where you put your widgets
-        self.inner = ttk.Frame(self.canvas)
-        self.inner_id = self.canvas.create_window((0, 0), window=self.inner, anchor="nw")
+        self.inner = tk.Frame(self.canvas, bg="white")
+        self.inner_id = self.canvas.create_window((0, 0), window=self.inner)
+        self.canvas.bind("<Configure>", self._on_canvas_configure)
 
-        # 3) Layout
         self.v_scroll.pack(side="right", fill="y")
-        self.canvas.pack(side="left", fill="both", expand=True)
+        self.canvas.pack(fill="both", expand=True)
 
-        # 4) Make scroll region update when inner frame grows
         self.inner.bind("<Configure>", self._on_frame_configure)
-
-        # 5) Optional: allow mousewheel scrolling when over the canvas
         self.canvas.bind_all("<MouseWheel>", self._on_mousewheel)
+
+    def _on_canvas_configure(self, event):
+        # Force the inner window to fill the canvas’s width
+        self.canvas.itemconfig(self.inner_id, width=event.width)
 
     def _on_frame_configure(self, event):
         # Update scrollregion to encompass the inner frame
