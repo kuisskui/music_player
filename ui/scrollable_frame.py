@@ -8,18 +8,18 @@ class ScrollableFrame(tk.Frame):
         super().__init__(parent, *args, **kwargs)
 
         self.canvas = tk.Canvas(self, bg="white", borderwidth=0, highlightthickness=0, height=600)
-        self.v_scroll = ttk.Scrollbar(self, orient="vertical", command=self.canvas.yview)
+        self.v_scroll = tk.Scrollbar(self, orient="vertical", command=self.canvas.yview)
+        self.v_scroll.pack(side="right", fill="y")
         self.canvas.configure(yscrollcommand=self.v_scroll.set)
+        self.canvas.pack(fill="both", expand=True)
+        self.canvas.bind("<Configure>", self._on_canvas_configure)
+        self.canvas.bind_all("<MouseWheel>", self._on_mousewheel)
+
+
 
         self.inner = tk.Frame(self.canvas, bg="white")
         self.inner_id = self.canvas.create_window((0, 0), window=self.inner)
-        self.canvas.bind("<Configure>", self._on_canvas_configure)
-
-        self.v_scroll.pack(side="right", fill="y")
-        self.canvas.pack(fill="both", expand=True)
-
         self.inner.bind("<Configure>", self._on_frame_configure)
-        self.canvas.bind_all("<MouseWheel>", self._on_mousewheel)
 
         self.view()
 
@@ -34,7 +34,7 @@ class ScrollableFrame(tk.Frame):
         self.canvas.itemconfig(self.inner_id, width=event.width)
 
     def _on_frame_configure(self, event):
-        # Update scrollregion to encompass the inner frame
+        # Update scroll region to encompass the inner frame
         self.canvas.configure(scrollregion=self.canvas.bbox("all"))
 
     def _on_mousewheel(self, event):
