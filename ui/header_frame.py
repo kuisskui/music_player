@@ -15,7 +15,7 @@ class HeaderFrame(tk.Frame):
             child.bind("<Button-1>", self.on_click)
 
     def view(self):
-        tk.Label(self, text="Playing...",
+        tk.Label(self, text=player.get_status(),
                  bg="black", fg="white",
                  font=("Arial", 16, "bold")) \
             .pack(side="top", anchor="w", padx=14, pady=14)
