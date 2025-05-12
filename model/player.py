@@ -8,6 +8,8 @@ class Player:
     _instances = {}
 
     def __init__(self):
+        self._proc = None
+        self.__proc = None
         self.current_url = ""
         self.__status: PlayerStatus = PlayerStatus.READY
 
@@ -25,11 +27,19 @@ class Player:
             info = ydl.extract_info(url, download=False)
             audio_url = info['url']
 
-        subprocess.run([
-            'ffplay', '-nodisp', '-autoexit', '-loglevel', 'quiet',
+        cmd = [
+            'ffplay',
+            '-nodisp', '-autoexit', '-loglevel', 'quiet',
             audio_url
-        ])
+        ]
+        self.__proc = subprocess.Popen(cmd)
         self.__status = PlayerStatus.PLAYING
+
+    def stop(self):
+        if self.__proc and self.__proc.poll() is None:
+            self.__proc.terminate()
+        self.__proc = None
+        self.__status = PlayerStatus.STOPPED
 
     def set_current_url(self, url):
         self.current_url = url
