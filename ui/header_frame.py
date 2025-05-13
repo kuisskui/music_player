@@ -1,7 +1,5 @@
-import random
 import tkinter as tk
 from model.player import player
-from model.media import Media
 from model.player_status import PlayerStatus
 
 
@@ -34,11 +32,14 @@ class HeaderFrame(tk.Frame):
         ).pack(side="bottom", anchor="e", padx=14, pady=14)
 
     def on_click(self, event):
-        i = random.randint(0, 100)
-        self.status_label.set(i)
         if player.get_status() is PlayerStatus.PLAYING:
+            print("stop")
             player.stop()
+        elif player.get_status() is PlayerStatus.STOPPED:
+            print("resume")
+            player.resume()
         else:
+            print("play")
             player.play()
 
         self.update()

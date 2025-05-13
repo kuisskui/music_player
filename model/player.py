@@ -1,6 +1,6 @@
 import subprocess
-from yt_dlp import YoutubeDL
-from model.media import Media
+import time
+
 from model.player_status import PlayerStatus
 from model.playlist import Playlist
 
@@ -12,6 +12,8 @@ class Player:
         self.__proc = None
         self.__status: PlayerStatus = PlayerStatus.READY
         self.__pointer = 0
+        self.__start_time = 0
+        self.__paused_offset = 0
         self.__playlist: Playlist = Playlist("New Playlist", [])
 
     def __call__(cls, *args, **kwds):
@@ -20,21 +22,27 @@ class Player:
             cls._instances[cls] = instance
         return cls._instances[cls]
 
-    def play(self):
+    def play(self, start: float = 0.0):
+        self.stop()
         self.__status = PlayerStatus.LOADING
+        self.__start_time = time.monotonic() - start
 
-        cmd = [
-            'ffplay',
-            '-nodisp', '-autoexit', '-loglevel', 'quiet',
-            self.__playlist.get_media(0).get_audio_url()
-        ]
+        cmd = ['ffplay', '-nodisp', '-autoexit', '-loglevel', 'quiet', '-i',
+               self.__playlist.get_media(0).get_audio_url(), '-ss', str(start)]
+        print(cmd)
 
         self.__proc = subprocess.Popen(cmd)
         self.__status = PlayerStatus.PLAYING
 
+    def resume(self):
+        self.play(self.__paused_offset)
+
     def stop(self):
         if self.__proc and self.__proc.poll() is None:
+            elapsed = time.monotonic() - self.__start_time
+            self.__paused_offset = elapsed
             self.__proc.terminate()
+
         self.__proc = None
         self.__status = PlayerStatus.STOPPED
 
