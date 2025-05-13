@@ -7,8 +7,13 @@ class ApplicationUI(tk.Tk):
         super().__init__()
         self.title("Music player")
 
-        content_frame = ContentFrame(self)
-        content_frame.pack()
+        self.content_frame = ContentFrame(self)
+        self.content_frame.pack()
+        self.bind_class(".", "<Tab>", self.on_tab)
+
+    def on_tab(self, event):
+        self.content_frame.form_frame.entry.focus_set()
+        return "break"
 
 
 if __name__ == "__main__":
