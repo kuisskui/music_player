@@ -11,8 +11,8 @@ class ContentFrame(tk.Frame):
         self.view()
 
     def view(self):
-        header_frame = HeaderFrame(self)
-        header_frame.pack(fill=tk.BOTH)
+        self.header_frame = HeaderFrame(self)
+        self.header_frame.pack(fill=tk.BOTH)
 
         scrollable_frame = ScrollableFrame(self)
         scrollable_frame.pack(fill=tk.BOTH)
