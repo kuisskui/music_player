@@ -23,7 +23,7 @@ class FormFrame(tk.Frame):
 
         self.entry.bind("<FocusIn>", self._clear_placeholder)
         self.entry.bind("<FocusOut>", self._add_placeholder)
-        self.entry.bind("<Return>", self._push_url)
+        self.entry.bind("<Return>", self._push_media)
         self.entry.bind("<Control-v>", lambda e: self.entry.event_generate("<<Paste>>"))
 
     def _clear_placeholder(self, event):
