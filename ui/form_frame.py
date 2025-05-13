@@ -1,4 +1,6 @@
 import tkinter as tk
+
+from model.media import Media
 from model.player import player
 
 
@@ -34,7 +36,7 @@ class FormFrame(tk.Frame):
             self.entry.insert(0, "Link")
             self.entry.config(fg="gray")
 
-    def _push_url(self, event):
-        print(self.entry.get())
+    def _push_media(self, event):
         url = self.entry.get()
-        player.set_current_url(url)
+        media = Media.build(url)
+        player.get_playlist().add_media(media)

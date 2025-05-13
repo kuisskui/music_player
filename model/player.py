@@ -2,16 +2,17 @@ import subprocess
 from yt_dlp import YoutubeDL
 from model.media import Media
 from model.player_status import PlayerStatus
+from model.playlist import Playlist
 
 
 class Player:
     _instances = {}
 
     def __init__(self):
-        self._proc = None
         self.__proc = None
-        self.current_url = ""
         self.__status: PlayerStatus = PlayerStatus.READY
+        self.__pointer = 0
+        self.__playlist: Playlist = Playlist("New Playlist", [])
 
     def __call__(cls, *args, **kwds):
         if cls not in cls._instances:
@@ -19,19 +20,15 @@ class Player:
             cls._instances[cls] = instance
         return cls._instances[cls]
 
-    def play(self, media: Media):
+    def play(self):
         self.__status = PlayerStatus.LOADING
-        url = media.url
-        ydl_opts = {'format': 'bestaudio/best', 'quiet': True}
-        with YoutubeDL(ydl_opts) as ydl:
-            info = ydl.extract_info(url, download=False)
-            audio_url = info['url']
 
         cmd = [
             'ffplay',
             '-nodisp', '-autoexit', '-loglevel', 'quiet',
-            audio_url
+            self.__playlist.get_media(0).get_audio_url()
         ]
+
         self.__proc = subprocess.Popen(cmd)
         self.__status = PlayerStatus.PLAYING
 
@@ -41,11 +38,17 @@ class Player:
         self.__proc = None
         self.__status = PlayerStatus.STOPPED
 
-    def set_current_url(self, url):
-        self.current_url = url
-
     def get_status(self):
-        return self.__status.label()
+        return self.__status
+
+    def get_playlist(self):
+        return self.__playlist
+
+    def get_pointer(self):
+        return self.__pointer
+
+    def set_pointer(self, pointer):
+        self.__pointer = pointer
 
 
 player = Player()

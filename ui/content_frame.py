@@ -17,5 +17,5 @@ class ContentFrame(tk.Frame):
         scrollable_frame = ScrollableFrame(self)
         scrollable_frame.pack(fill=tk.BOTH)
 
-        form_frame = FormFrame(self)
-        form_frame.pack(fill=tk.BOTH)
+        self.form_frame = FormFrame(self)
+        self.form_frame.pack(fill=tk.BOTH)
