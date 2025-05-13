@@ -10,6 +10,7 @@ class ApplicationUI(tk.Tk):
         self.content_frame = ContentFrame(self)
         self.content_frame.pack()
         self.bind_class(".", "<Tab>", self.on_tab)
+        self.bind_class(".", "<space>", self.content_frame.header_frame.on_click)
 
     def on_tab(self, event):
         self.content_frame.form_frame.entry.focus_set()
