@@ -33,13 +33,10 @@ class HeaderFrame(tk.Frame):
 
     def on_click(self, event):
         if player.get_status() is PlayerStatus.PLAYING:
-            print("stop")
             player.stop()
         elif player.get_status() is PlayerStatus.STOPPED:
-            print("resume")
             player.resume()
         else:
-            print("play")
             player.play()
 
         self.update()

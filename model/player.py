@@ -1,6 +1,5 @@
 import subprocess
 import time
-
 from model.player_status import PlayerStatus
 from model.playlist import Playlist
 
@@ -27,9 +26,14 @@ class Player:
         self.__status = PlayerStatus.LOADING
         self.__start_time = time.monotonic() - start
 
-        cmd = ['ffplay', '-nodisp', '-autoexit', '-loglevel', 'quiet', '-i',
-               self.__playlist.get_media(0).get_audio_url(), '-ss', str(start)]
-        print(cmd)
+        cmd = [
+            'ffplay',
+            '-nodisp',
+            '-autoexit',
+            '-loglevel', 'quiet',
+            '-i', self.get_playlist().get_media(self.get_pointer()).get_audio_url(),
+            '-ss', f"{start:.6f}",
+        ]
 
         self.__proc = subprocess.Popen(cmd)
         self.__status = PlayerStatus.PLAYING
