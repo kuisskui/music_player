@@ -16,6 +16,26 @@ class ApplicationUI(tk.Tk):
         self.content_frame.form_frame.entry.focus_set()
         return "break"
 
+    def debug(self):
+        CANDIDATES = [
+            "<MouseWheel>",  # Windows/macOS scroll
+            "<Button-4>",  # X11 scroll up
+            "<Button-5>",  # X11 scroll down
+            "<Button>",  # any mouse button press
+            "<ButtonPress>",  # same as above
+            "<ButtonRelease>",
+            "<KeyPress>",
+            "<KeyRelease>",
+            "<Motion>",
+            "<Enter>",
+            "<Leave>",
+        ]
+        for seq in CANDIDATES:
+            self.bind_all(seq, lambda e, s=seq: logger(e, s))
+
+        def logger(evt, seq):
+            print(f"Sequence: {seq:12}  widget: {evt.widget}  delta/num: {getattr(evt, 'delta', evt.num)}")
+
 
 if __name__ == "__main__":
     app = ApplicationUI()

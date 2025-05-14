@@ -15,8 +15,6 @@ class ScrollableFrame(tk.Frame):
         self.canvas.bind("<Configure>", self._on_canvas_configure)
         self.canvas.bind_all("<MouseWheel>", self._on_mousewheel)
 
-
-
         self.inner = tk.Frame(self.canvas, bg="white")
         self.inner_id = self.canvas.create_window((0, 0), window=self.inner)
         self.inner.bind("<Configure>", self._on_frame_configure)
@@ -38,7 +36,6 @@ class ScrollableFrame(tk.Frame):
         self.canvas.configure(scrollregion=self.canvas.bbox("all"))
 
     def _on_mousewheel(self, event):
-        # Windows / MacOS / Linux delta differences
         delta = -1 * (event.delta // 120) if event.delta else event.num == 5 and 1 or -1
         self.canvas.yview_scroll(delta, "units")
 
