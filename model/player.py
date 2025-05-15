@@ -60,12 +60,12 @@ class Player:
 
     def play_next(self):
         self.stop()
-        self.__pointer += 1
+        self.set_pointer(self.__pointer + 1)
         self.play()
 
     def play_previous(self):
         self.stop()
-        self.__pointer -= 1
+        self.set_pointer(self.__pointer - 1)
         self.play()
 
     def get_status(self):
@@ -78,6 +78,11 @@ class Player:
         return self.__pointer
 
     def set_pointer(self, pointer):
+        count_media = self.__playlist.count_media()
+        if pointer < 0:
+            pointer = count_media - 1;
+        elif pointer > count_media - 1:
+            pointer = 0
         self.__pointer = pointer
 
 
