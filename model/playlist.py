@@ -8,6 +8,7 @@ class Playlist:
 
     def add_media(self, media):
         self.media_list.append(media)
+        print(self.media_list)
 
     def get_media(self, index) -> Media:
         if len(self.media_list) == 0:

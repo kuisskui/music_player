@@ -1,7 +1,8 @@
 import tkinter as tk
-
 from model.media import Media
 from model.player import player
+from ui.card_frame import CardFrame
+
 
 
 class FormFrame(tk.Frame):
@@ -40,3 +41,7 @@ class FormFrame(tk.Frame):
         url = self.entry.get()
         media = Media.build(url)
         player.get_playlist().add_media(media)
+        # inner = app.content_frame.scrollable_frame.inner
+        inner = self.master.scrollable_frame.inner
+        card = CardFrame(media, inner)
+        card.pack(fill="both", padx=10, pady=10)

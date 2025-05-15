@@ -23,9 +23,8 @@ class ScrollableFrame(tk.Frame):
 
     def view(self):
         # ——— Card ———
-        for _ in range(7):
-            card = CardFrame(self.inner)
-            card.pack(fill="both", padx=10, pady=10)
+        # TODO load all mp3 form storage
+        pass
 
     def _on_canvas_configure(self, event):
         # Force the inner window to fill the canvas’s width
