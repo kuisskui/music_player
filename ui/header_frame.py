@@ -1,6 +1,5 @@
 import tkinter as tk
 from model.player import player
-from model.player_status import PlayerStatus
 
 
 class HeaderFrame(tk.Frame):
@@ -32,13 +31,7 @@ class HeaderFrame(tk.Frame):
         ).pack(side="bottom", anchor="e", padx=14, pady=14)
 
     def on_click(self, event):
-        if player.get_status() is PlayerStatus.PLAYING:
-            player.stop()
-        elif player.get_status() is PlayerStatus.STOPPED:
-            player.resume()
-        else:
-            player.play()
-
+        player.toggle()
         self.update()
 
     def update(self):

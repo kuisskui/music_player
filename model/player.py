@@ -50,6 +50,24 @@ class Player:
         self.__proc = None
         self.__status = PlayerStatus.STOPPED
 
+    def toggle(self):
+        if self.get_status() is PlayerStatus.PLAYING:
+            self.stop()
+        elif self.get_status() is PlayerStatus.STOPPED:
+            self.resume()
+        else:
+            self.play()
+
+    def play_next(self):
+        self.stop()
+        self.__pointer += 1
+        self.play()
+
+    def play_previous(self):
+        self.stop()
+        self.__pointer -= 1
+        self.play()
+
     def get_status(self):
         return self.__status
 

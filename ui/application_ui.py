@@ -1,5 +1,6 @@
 import tkinter as tk
 from ui.content_frame import ContentFrame
+from model.player import player
 
 
 class ApplicationUI(tk.Tk):
@@ -9,12 +10,39 @@ class ApplicationUI(tk.Tk):
 
         self.content_frame = ContentFrame(self)
         self.content_frame.pack()
-        self.bind_class(".", "<Tab>", self.on_tab)
-        self.bind_class(".", "<space>", self.content_frame.header_frame.on_click)
 
-    def on_tab(self, event):
+        self.__bind()
+        self.debug()
+
+    def __bind(self):
+        self.bind_class(".", "<Tab>", self.handle_tab)
+        self.bind_class(".", "<Escape>", self.handle_escape)
+        self.bind_class(".", "<space>", self.handle_space)
+        self.bind_class(".", "<KeyPress-j>", self.handle_j)
+        self.bind_class(".", "<KeyPress-l>", self.handle_l)
+        self.bind_class(".", "<KeyPress-k>", self.handle_k)
+
+    def handle_tab(self, event):
         self.content_frame.form_frame.entry.focus_set()
         return "break"
+
+    def handle_escape(self, event):
+        self.focus_set()
+
+    def handle_space(self, event):
+        self.content_frame.header_frame.on_click("en")
+
+    def handle_j(self, event):
+        # play previous music
+        player.play_previous()
+
+    def handle_l(self, event):
+        # stop and play
+        player.play_next()
+
+    def handle_k(self, event):
+        # play next music
+        player.toggle()
 
     def debug(self):
         CANDIDATES = [
