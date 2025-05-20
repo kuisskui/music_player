@@ -7,15 +7,14 @@ class HeaderFrame(tk.Frame):
         super().__init__(parent, *args, **kwargs)
         self.status_label = tk.Variable()
         self.title_label = tk.Variable()
-        self.update()
 
-        self.configure(bg="black")
+        player.observe(self.status_label, lambda: player.get_status().label())
+        player.observe(self.title_label, lambda: player.get_playlist().get_media(player.get_pointer()).get_name())
+
         self.view()
 
-        self.bind("<Button-1>", self.on_click)
-
-        for child in self.winfo_children():
-            child.bind("<Button-1>", self.on_click)
+        self.configure(bg="black")
+        self.__bind()
 
     def view(self):
         tk.Label(
@@ -32,8 +31,9 @@ class HeaderFrame(tk.Frame):
 
     def on_click(self, event):
         player.toggle()
-        self.update()
 
-    def update(self):
-        self.status_label.set(player.get_status().label())
-        self.title_label.set(player.get_playlist().get_media(player.get_pointer()).get_name())
+    def __bind(self):
+        self.bind("<Button-1>", self.on_click)
+
+        for child in self.winfo_children():
+            child.bind("<Button-1>", self.on_click)

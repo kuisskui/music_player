@@ -6,13 +6,17 @@ from model.player import player
 class ApplicationUI(tk.Tk):
     def __init__(self):
         super().__init__()
-        self.title("Music player")
 
+        self.content_frame = None
+
+        self.view()
+        self.__bind()
+        # self.debug()
+
+    def view(self):
+        self.title("Music player")
         self.content_frame = ContentFrame(self)
         self.content_frame.pack()
-
-        self.__bind()
-        self.debug()
 
     def __bind(self):
         self.bind_class(".", "<Tab>", self.handle_tab)

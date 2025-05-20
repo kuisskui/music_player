@@ -1,5 +1,6 @@
 import subprocess
 import time
+import tkinter as tk
 from model.player_status import PlayerStatus
 from model.playlist import Playlist
 
@@ -9,21 +10,31 @@ class Player:
 
     def __init__(self):
         self.__process = None
-        self.__status: PlayerStatus = PlayerStatus.ready
+        self.__status: PlayerStatus = PlayerStatus.loading
         self.__pointer: int = 0
         self.__start_time: float = 0
         self.__paused_offset: float = 0
         self.__playlist: Playlist = Playlist("New Playlist", [])
+        self.__observers = []
+        self.set_status(PlayerStatus.ready)
 
-    def __call__(cls, *args, **kwds):
+    def __call__(cls, *args, **kwargs):
         if cls not in cls._instances:
-            instance = super().__call__(*args, **kwds)
+            instance = super().__call__(*args, **kwargs)
             cls._instances[cls] = instance
         return cls._instances[cls]
 
+    def observe(self, tk_var: tk.Variable, getter):
+        self.__observers.append((tk_var, getter))
+        tk_var.set(getter())
+
+    def notify_observers(self):
+        for var, getter in self.__observers:
+            var.set(getter())
+
     def play(self, start: float = 0.0):
         self.stop()
-        self.__status = PlayerStatus.loading
+        self.set_status(PlayerStatus.loading)
         self.__start_time = time.monotonic() - start
 
         cmd = [
@@ -36,7 +47,7 @@ class Player:
         ]
 
         self.__process = subprocess.Popen(cmd)
-        self.__status = PlayerStatus.playing
+        self.set_status(PlayerStatus.playing)
 
     def resume(self):
         self.play(self.__paused_offset)
@@ -48,7 +59,7 @@ class Player:
             self.__process.terminate()
 
         self.__process = None
-        self.__status = PlayerStatus.stopped
+        self.set_status(PlayerStatus.stopped)
 
     def toggle(self):
         if self.get_status() is PlayerStatus.playing:
@@ -71,6 +82,11 @@ class Player:
     def get_status(self):
         return self.__status
 
+    def set_status(self, new: PlayerStatus):
+        if new is not self.__status:
+            self.__status = new
+            self.notify_observers()
+
     def get_playlist(self):
         return self.__playlist
 
@@ -80,7 +96,7 @@ class Player:
     def set_pointer(self, pointer):
         count_media = self.__playlist.count_media()
         if pointer < 0:
-            pointer = count_media - 1;
+            pointer = count_media - 1
         elif pointer > count_media - 1:
             pointer = 0
         self.__pointer = pointer
