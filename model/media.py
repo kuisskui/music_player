@@ -5,8 +5,8 @@ import tempfile
 
 class Media:
     def __init__(self, audio_path: str, name: str):
-        self.__audio_path = audio_path
-        self.__name = name
+        self.__path: str = audio_path
+        self.__name: str = name
 
     @classmethod
     def build(cls, url: str) -> "Media":
@@ -28,8 +28,8 @@ class Media:
             title = info.get('title', info.get('id'))
             return cls(audio_path, title)
 
-    def get_audio_url(self) -> str:
-        return self.__audio_path
+    def get_path(self) -> str:
+        return self.__path
 
     def get_name(self) -> str:
         return self.__name

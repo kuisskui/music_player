@@ -17,7 +17,7 @@ class CardFrame(tk.Frame):
             .pack(anchor="w", padx=10, pady=(10, 0))
 
         tk.Label(self,
-                 text=self.__media.get_audio_url(),
+                 text=self.__media.get_path(),
                  bg="white", fg="#666666",
                  wraplength=320, justify="left",
                  font=("Arial", 10)) \

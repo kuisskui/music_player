@@ -8,11 +8,11 @@ class Player:
     _instances = {}
 
     def __init__(self):
-        self.__proc = None
-        self.__status: PlayerStatus = PlayerStatus.READY
-        self.__pointer = 0
-        self.__start_time = 0
-        self.__paused_offset = 0
+        self.__process = None
+        self.__status: PlayerStatus = PlayerStatus.ready
+        self.__pointer: int = 0
+        self.__start_time: float = 0
+        self.__paused_offset: float = 0
         self.__playlist: Playlist = Playlist("New Playlist", [])
 
     def __call__(cls, *args, **kwds):
@@ -23,7 +23,7 @@ class Player:
 
     def play(self, start: float = 0.0):
         self.stop()
-        self.__status = PlayerStatus.LOADING
+        self.__status = PlayerStatus.loading
         self.__start_time = time.monotonic() - start
 
         cmd = [
@@ -31,29 +31,29 @@ class Player:
             '-nodisp',
             '-autoexit',
             '-loglevel', 'quiet',
-            '-i', self.get_playlist().get_media(self.get_pointer()).get_audio_url(),
+            '-i', self.get_playlist().get_media(self.get_pointer()).get_path(),
             '-ss', f"{start:.6f}",
         ]
 
-        self.__proc = subprocess.Popen(cmd)
-        self.__status = PlayerStatus.PLAYING
+        self.__process = subprocess.Popen(cmd)
+        self.__status = PlayerStatus.playing
 
     def resume(self):
         self.play(self.__paused_offset)
 
     def stop(self):
-        if self.__proc and self.__proc.poll() is None:
+        if self.__process and self.__process.poll() is None:
             elapsed = time.monotonic() - self.__start_time
             self.__paused_offset = elapsed
-            self.__proc.terminate()
+            self.__process.terminate()
 
-        self.__proc = None
-        self.__status = PlayerStatus.STOPPED
+        self.__process = None
+        self.__status = PlayerStatus.stopped
 
     def toggle(self):
-        if self.get_status() is PlayerStatus.PLAYING:
+        if self.get_status() is PlayerStatus.playing:
             self.stop()
-        elif self.get_status() is PlayerStatus.STOPPED:
+        elif self.get_status() is PlayerStatus.stopped:
             self.resume()
         else:
             self.play()
