@@ -39,8 +39,10 @@ class FormFrame(tk.Frame):
 
     def _push_media(self, event):
         player.set_status(PlayerStatus.loading)
+        self.update()
         url = self.entry.get()
         media = Media.build(url)
+        player.set_status(PlayerStatus.ready)
         player.get_playlist().add_media(media)
         inner = self.master.scrollable_frame.inner
         card = CardFrame(media, inner)
