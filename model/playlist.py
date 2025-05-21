@@ -11,7 +11,7 @@ class Playlist:
 
     def get_media(self, index) -> Media:
         if len(self.media_list) == 0:
-            return Media("", "Empty playlist")
+            return Media("", "Empty playlist", "")
         return self.media_list[index]
 
     def count_media(self) -> int:
