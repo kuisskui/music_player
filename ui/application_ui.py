@@ -1,12 +1,15 @@
+import os
 import tkinter as tk
 from ui.content_frame import ContentFrame
 from model.player import player
+from PIL import Image, ImageTk
 
 
 class ApplicationUI(tk.Tk):
     def __init__(self):
         super().__init__()
-
+        img = Image.open(os.path.join(os.path.curdir, "5579687bae3bf759e5eae76c15cd32ee.jpg"))
+        self.iconphoto(False, ImageTk.PhotoImage(img))
         self.content_frame = None
 
         self.view()

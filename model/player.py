@@ -24,6 +24,9 @@ class Player:
             cls._instances[cls] = instance
         return cls._instances[cls]
 
+    def has_finished(self) -> bool:
+        return self.__process is not None and self.__process.poll() is not None
+
     def observe(self, tk_var: tk.Variable, getter):
         self.__observers.append((tk_var, getter))
         tk_var.set(getter())

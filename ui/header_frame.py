@@ -1,5 +1,6 @@
 import tkinter as tk
 from model.player import player
+from model.player_status import PlayerStatus
 
 
 class HeaderFrame(tk.Frame):
@@ -15,6 +16,14 @@ class HeaderFrame(tk.Frame):
 
         self.configure(bg="black")
         self.__bind()
+        self.after(500, self._check_end_of_track)
+
+    def _check_end_of_track(self):
+
+        if player.has_finished() and player.get_status() is PlayerStatus.playing:
+            player.play_next()
+
+        self.after(1000, self._check_end_of_track)
 
     def view(self):
         tk.Label(
