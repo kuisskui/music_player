@@ -16,6 +16,6 @@ class CacheManager:
         with open(self.CACHE_FILE, "r") as f:
             cache = json.load(f)
         for url, value in cache.items():
-            media = Media(value['path'], value['title'], '')
+            media = Media(value['path'], value['title'], url)
             media_list.append(media)
         return media_list

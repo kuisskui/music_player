@@ -24,6 +24,7 @@ class ApplicationUI(tk.Tk):
     def __bind(self):
         self.bind_class(".", "<Tab>", self.handle_tab)
         self.bind_class(".", "<Escape>", self.handle_escape)
+        self.bind_class(".", "<BackSpace>", self.handle_back_space)
         self.bind_class(".", "<space>", self.handle_space)
         self.bind_class(".", "<KeyPress-j>", self.handle_j)
         self.bind_class(".", "<KeyPress-l>", self.handle_l)
@@ -35,6 +36,12 @@ class ApplicationUI(tk.Tk):
 
     def handle_escape(self, event):
         self.focus_set()
+
+    def handle_back_space(self, event):
+        player.delete_current_media()
+        self.update()
+        self.content_frame.scrollable_frame.view()
+        player.play()
 
     def handle_space(self, event):
         self.content_frame.header_frame.on_click("en")

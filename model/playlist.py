@@ -19,3 +19,8 @@ class Playlist:
 
     def count_media(self) -> int:
         return len(self.media_list)
+
+    def delete_media(self, index: int):
+        media = self.media_list[index]
+        media.delete_media()
+        del self.media_list[index]

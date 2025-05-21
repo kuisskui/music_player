@@ -47,6 +47,28 @@ class Media:
 
         return cls(audio_path, title, url)
 
+    def delete_media(self):
+        if not os.path.exists(self.CACHE_FILE):
+            return  # nothing to do
+
+        with open(self.CACHE_FILE, "r", encoding="utf-8") as f:
+            cache = json.load(f)
+
+        entry = cache.get(self.__url)
+        if not entry:
+            return  # not in cache
+
+        audio_path = entry.get("path")
+        if audio_path and os.path.exists(audio_path):
+            try:
+                os.remove(audio_path)
+            except OSError:
+                pass  # could log a warning here
+
+        cache.pop(self.__url, None)
+        with open(self.CACHE_FILE, "w", encoding="utf-8") as f:
+            json.dump(cache, f, indent=2, ensure_ascii=False)
+
     def get_path(self) -> str:
         return self.__path
 

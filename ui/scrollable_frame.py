@@ -10,6 +10,7 @@ class ScrollableFrame(tk.Frame):
 
         self.canvas = tk.Canvas(self, bg="white", borderwidth=0, highlightthickness=0, height=600)
         self.v_scroll = tk.Scrollbar(self, orient="vertical", command=self.canvas.yview)
+        print(self.canvas.yview())
         self.v_scroll.pack(side="right", fill="y")
         self.canvas.configure(yscrollcommand=self.v_scroll.set)
         self.canvas.pack(fill="both", expand=True)
@@ -23,8 +24,11 @@ class ScrollableFrame(tk.Frame):
         self.view()
 
     def view(self):
-        # ——— Card ———
-        # TODO load all mp3 form storage
+        for child in self.inner.winfo_children():
+            child.destroy()
+
+        self.canvas.yview_moveto(1.0)
+
         count_media = player.get_playlist().count_media()
         for i in range(count_media):
             media = player.get_playlist().get_media(i)

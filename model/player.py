@@ -104,5 +104,9 @@ class Player:
             pointer = 0
         self.__pointer = pointer
 
+    def delete_current_media(self):
+        self.get_playlist().delete_media(self.get_pointer())
+        self.set_pointer(self.__pointer)
+
 
 player = Player()
