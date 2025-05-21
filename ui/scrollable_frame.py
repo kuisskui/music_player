@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from ui.card_frame import CardFrame
+from model.player import player
 
 
 class ScrollableFrame(tk.Frame):
@@ -24,7 +25,11 @@ class ScrollableFrame(tk.Frame):
     def view(self):
         # ——— Card ———
         # TODO load all mp3 form storage
-        pass
+        count_media = player.get_playlist().count_media()
+        for i in range(count_media):
+            media = player.get_playlist().get_media(i)
+            card = CardFrame(media, self.inner)
+            card.pack(fill="both", padx=10, pady=10)
 
     def _on_canvas_configure(self, event):
         # Force the inner window to fill the canvas’s width

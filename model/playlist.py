@@ -9,6 +9,9 @@ class Playlist:
     def add_media(self, media):
         self.media_list.append(media)
 
+    def add_medias(self, media_list):
+        self.media_list.extend(media_list)
+
     def get_media(self, index) -> Media:
         if len(self.media_list) == 0:
             return Media("", "Empty playlist", "")
