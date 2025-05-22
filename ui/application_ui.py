@@ -1,15 +1,23 @@
-import os
+import os, sys
 import tkinter as tk
 from ui.content_frame import ContentFrame
 from model.player import player
 from PIL import Image, ImageTk
 
 
+def resource_path(file):
+    base = getattr(sys, "_MEIPASS", os.path.abspath("."))
+    return os.path.join(base, 'resource', file)
+
+
 class ApplicationUI(tk.Tk):
     def __init__(self):
         super().__init__()
-        img = Image.open(os.path.join(os.path.curdir, "5579687bae3bf759e5eae76c15cd32ee.jpg"))
-        self.iconphoto(False, ImageTk.PhotoImage(img))
+        icon_file = resource_path("icon.png")
+        img = Image.open(icon_file)
+        photo = ImageTk.PhotoImage(img)
+
+        self.iconphoto(False, photo)
         self.content_frame = None
 
         self.view()
